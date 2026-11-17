@@ -315,10 +315,10 @@ msgid "Tamanho mínimo por campo RCA (caracteres visíveis, 0–500)"
 msgstr "Tamanho mínimo por campo RCA (caracteres visíveis, 0–500)"
 
 msgid "This plugin requires GLPI >= %1$s and <= %2$s."
-msgstr "This plugin requires GLPI >= %1$s and <= %2$s."
+msgstr "Este plugin requer GLPI >= %1$s e <= %2$s."
 
 msgid "This plugin requires PHP >= %s."
-msgstr "This plugin requires PHP >= %s."
+msgstr "Este plugin requer PHP >= %s."
 
 msgid "Título"
 msgstr "Título"

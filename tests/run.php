@@ -635,6 +635,108 @@ function test_glpi_10_11_12_subprocesses(): void
     assertSame(false, $DB->tableExists(PluginProblemflowConfigConstants::TABLE_EVENTS), 'events removida no uninstall');
 }
 
+function test_security_and_review_regressions(): void
+{
+    global $DB;
+    resetEnvironment();
+
+    // 1) Cross-entity sync_solve_linked_tickets deve ignorar chamados de outra entidade
+    PluginProblemflowConfig::saveConfig(0, [
+        'is_active'                 => 1,
+        'is_recursive'              => 1,
+        'sync_solve_linked_tickets' => 1,
+    ]);
+
+    $p   = new Problem();
+    $pid = $p->add([
+        'name'         => 'Problema entidade raiz',
+        'entities_id'  => 0,
+        'status'       => 2,
+        'causecontent' => 'Causa raiz documentada.',
+    ]);
+
+    $tSame  = (new Ticket())->add(['name' => 'Chamado mesma entidade', 'entities_id' => 0, 'status' => 2]);
+    $tOther = (new Ticket())->add(['name' => 'Chamado outra entidade', 'entities_id' => 99, 'status' => 2]);
+
+    (new Problem_Ticket())->add(['problems_id' => $pid, 'tickets_id' => $tSame]);
+    (new Problem_Ticket())->add(['problems_id' => $pid, 'tickets_id' => $tOther]);
+
+    $p->update(['id' => $pid, 'status' => 5]);
+    assertSame(5, (int) $DB->getRow('glpi_tickets', $tSame)['status'], 'chamado da mesma entidade foi solucionado');
+    assertSame(2, (int) $DB->getRow('glpi_tickets', $tOther)['status'], 'chamado de outra entidade nao foi solucionado');
+    $otherSolutions = iterator_to_array($DB->request(['FROM' => 'glpi_itilsolutions', 'WHERE' => ['itemtype' => 'Ticket', 'items_id' => $tOther]]));
+    assertSame(0, count($otherSolutions), 'nenhuma ITILSolution criada para chamado de outra entidade');
+
+    // 2) Salvar Problema ja solucionado com $updates=[] e $oldvalues=[] nao reaplica solucao
+    $p->updates   = [];
+    $p->oldvalues = [];
+    PluginProblemflowEngine::onProblemUpdate($p);
+    $sameSolutions = iterator_to_array($DB->request(['FROM' => 'glpi_itilsolutions', 'WHERE' => ['itemtype' => 'Ticket', 'items_id' => $tSame]]));
+    assertSame(1, count($sameSolutions), 'nao cria segunda ITILSolution quando updates/oldvalues estao vazios');
+
+    // 3) PluginProblemflowTab filtra chamados excluidos (is_deleted) e de entidades nao autorizadas
+    $tDeleted = (new Ticket())->add(['name' => 'Chamado na lixeira', 'entities_id' => 0, 'status' => 2, 'is_deleted' => 1]);
+    (new Problem_Ticket())->add(['problems_id' => $pid, 'tickets_id' => $tDeleted]);
+
+    Session::$allowedEntities = [0 => true, 99 => false];
+    $tab                      = new PluginProblemflowTab();
+    assertSame('Problem Flow (1)', $tab->getTabNameForItem($p), 'contador da aba exclui deletados e entidades nao autorizadas');
+
+    ob_start();
+    PluginProblemflowTab::displayTabContentForItem($p);
+    $tabHtml = (string) ob_get_clean();
+    assertTrue(strpos($tabHtml, 'Chamado mesma entidade') !== false, 'aba exibe chamado autorizado');
+    assertSame(false, strpos($tabHtml, 'Chamado outra entidade'), 'aba oculta chamado de entidade nao autorizada');
+    assertSame(false, strpos($tabHtml, 'Chamado na lixeira'), 'aba oculta chamado deletado');
+
+    // 4) Isolamento multi-localizacao / multi-ativo em findOpenMatchingProblem()
+    resetEnvironment();
+    $DB->insert('glpi_itilcategories', ['id' => 8, 'name' => 'Impressoras']);
+    PluginProblemflowConfig::saveConfig(0, [
+        'is_active'       => 1,
+        'is_recursive'    => 1,
+        'auto_escalate'   => 1,
+        'threshold_count' => 2,
+        'window_hours'    => 24,
+        'match_category'  => 1,
+        'match_location'  => 1,
+        'match_item'      => 1,
+    ]);
+
+    $makeGroupTicket = static function (string $title, int $locId, int $assetId) use ($DB): void {
+        $t  = new Ticket();
+        $id = $t->add([
+            'name'              => $title,
+            'entities_id'       => 0,
+            'itilcategories_id' => 8,
+            'locations_id'      => $locId,
+            'status'            => 1,
+            'date_creation'     => date('Y-m-d H:i:s'),
+        ]);
+        $DB->insert('glpi_items_tickets', [
+            'tickets_id' => $id,
+            'itemtype'   => 'Printer',
+            'items_id'   => $assetId,
+        ]);
+        PluginProblemflowEngine::onTicketUpdate($t);
+    };
+
+    // Grupo A (loc=10, item=100) -> cria Problema #1
+    $makeGroupTicket('Printer A1', 10, 100);
+    $makeGroupTicket('Printer A2', 10, 100);
+
+    // Grupo B (mesma categoria 8, mas loc=20, item=200) -> deve criar Problema #2 separado
+    $makeGroupTicket('Printer B1', 20, 200);
+    $makeGroupTicket('Printer B2', 20, 200);
+
+    // Grupo C (mesma categoria 8 e loc=10, mas outro ativo item=300) -> deve criar Problema #3 separado
+    $makeGroupTicket('Printer C1', 10, 300);
+    $makeGroupTicket('Printer C2', 10, 300);
+
+    $allProblems = iterator_to_array($DB->request(['FROM' => 'glpi_problems', 'ORDER' => ['id ASC']]));
+    assertSame(3, count($allProblems), 'cria Problemas distintos para combinacoes distintas de localizacao/ativo');
+}
+
 $tests = [
     'test_plugin_manifest_and_hooks',
     'test_legacy_query_only_db_on_glpi_10_0_5',
@@ -645,6 +747,7 @@ $tests = [
     'test_tab_access_control_and_rendering',
     'test_config_form_security_and_xss_escape',
     'test_purge_cleanup',
+    'test_security_and_review_regressions',
     'test_glpi_10_11_12_subprocesses',
 ];
 

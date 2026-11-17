@@ -96,37 +96,15 @@ trait PluginProblemflowTabBody
     }
 
     /**
-     * Conta quantos chamados estão vinculados ao Problema.
+     * Conta quantos chamados visíveis estão vinculados ao Problema.
      */
     private static function countLinkedTickets(int $problemsId): int
     {
-        global $DB;
-
-        if ($problemsId <= 0 || !isset($DB) || !method_exists($DB, 'request')) {
-            return 0;
-        }
-        if (method_exists($DB, 'tableExists') && !$DB->tableExists('glpi_problems_tickets')) {
-            return 0;
-        }
-
-        $it = $DB->request([
-            'SELECT' => ['tickets_id'],
-            'FROM'   => 'glpi_problems_tickets',
-            'WHERE'  => ['problems_id' => $problemsId],
-        ]);
-
-        $seen = [];
-        foreach ($it as $row) {
-            $tid = (int) ($row['tickets_id'] ?? 0);
-            if ($tid > 0) {
-                $seen[$tid] = true;
-            }
-        }
-        return count($seen);
+        return count(self::getLinkedTickets($problemsId));
     }
 
     /**
-     * Carrega os chamados vinculados ao Problema.
+     * Carrega os chamados vinculados ao Problema, filtrando excluídos e entidades não autorizadas.
      *
      * @return array<int, array<string, mixed>>
      */
@@ -166,6 +144,15 @@ trait PluginProblemflowTabBody
             'ORDER' => ['id DESC'],
         ]);
         foreach ($it as $row) {
+            if (!empty($row['is_deleted'])) {
+                continue;
+            }
+            if (
+                method_exists('Session', 'haveAccessToEntity')
+                && !Session::haveAccessToEntity((int) ($row['entities_id'] ?? 0))
+            ) {
+                continue;
+            }
             $tickets[] = $row;
         }
 

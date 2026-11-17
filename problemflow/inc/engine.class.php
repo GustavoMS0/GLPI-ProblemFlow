@@ -171,13 +171,14 @@ class PluginProblemflowEngine
             return;
         }
 
-        $updates = is_array($item->updates) ? $item->updates : [];
-        if (!empty($updates) && !in_array('status', $updates, true)) {
+        $updates   = is_array($item->updates) ? $item->updates : [];
+        $oldvalues = is_array($item->oldvalues) ? $item->oldvalues : [];
+        if (!in_array('status', $updates, true) && !array_key_exists('status', $oldvalues)) {
             return;
         }
 
         $newStatus = (int) ($item->fields['status'] ?? 0);
-        $oldStatus = (int) ($item->oldvalues['status'] ?? 0);
+        $oldStatus = (int) ($oldvalues['status'] ?? 0);
         $terminal  = [
             PluginProblemflowConfigConstants::PROBLEM_STATUS_SOLVED,
             PluginProblemflowConfigConstants::PROBLEM_STATUS_CLOSED,
@@ -211,6 +212,9 @@ class PluginProblemflowEngine
             foreach ($linkedTicketIds as $ticketsId) {
                 $ticketRow = self::loadTicketRow($ticketsId);
                 if ($ticketRow === null || !empty($ticketRow['is_deleted'])) {
+                    continue;
+                }
+                if ((int) ($ticketRow['entities_id'] ?? -1) !== $entitiesId) {
                     continue;
                 }
                 $ticketStatus = (int) ($ticketRow['status'] ?? 1);
@@ -472,7 +476,13 @@ class PluginProblemflowEngine
         }
 
         $matchingIds = array_keys($matchingTickets);
-        $problemsId  = self::findOpenMatchingProblem($entitiesId, $matchCategory ? $catId : 0, $matchingIds);
+        $problemsId  = self::findOpenMatchingProblem(
+            $entitiesId,
+            $matchCategory ? $catId : 0,
+            $matchLocation ? $locId : 0,
+            $ticketItemKeys,
+            $matchingIds
+        );
         $createdNew  = false;
 
         self::$escalating = true;
@@ -640,10 +650,16 @@ class PluginProblemflowEngine
     /**
      * Localiza um Problema aberto equivalente (já vinculado a um dos chamados ou criado pelo ProblemFlow).
      *
-     * @param array<int, int> $matchingTicketIds
+     * @param array<int, string> $requiredItemKeys
+     * @param array<int, int>    $matchingTicketIds
      */
-    private static function findOpenMatchingProblem(int $entitiesId, int $catId, array $matchingTicketIds): int
-    {
+    private static function findOpenMatchingProblem(
+        int $entitiesId,
+        int $catId,
+        int $locId,
+        array $requiredItemKeys,
+        array $matchingTicketIds
+    ): int {
         global $DB;
 
         if (!isset($DB) || !method_exists($DB, 'request')) {
@@ -690,12 +706,15 @@ class PluginProblemflowEngine
                             continue;
                         }
                     }
+                    if (!self::problemMatchesGroupingCriteria((int) $problemRow['id'], $locId, $requiredItemKeys)) {
+                        continue;
+                    }
                     return (int) $problemRow['id'];
                 }
             }
         }
 
-        // 2) Busca Problema aberto gerado pelo ProblemFlow com mesma entidade e categoria
+        // 2) Busca Problema aberto gerado pelo ProblemFlow com mesma entidade, categoria e critérios ativos
         $where = [
             'entities_id' => $entitiesId,
             'is_deleted'  => 0,
@@ -715,11 +734,54 @@ class PluginProblemflowEngine
         foreach ($it as $row) {
             $name = PluginProblemflowCompat::fromCore((string) ($row['name'] ?? ''));
             if (strpos($name, '[ProblemFlow]') === 0) {
-                return (int) $row['id'];
+                $candidateId = (int) $row['id'];
+                if (!self::problemMatchesGroupingCriteria($candidateId, $locId, $requiredItemKeys)) {
+                    continue;
+                }
+                return $candidateId;
             }
         }
 
         return 0;
+    }
+
+    /**
+     * Verifica se os chamados vinculados a um Problema atendem aos critérios ativos de localização e ativo.
+     *
+     * @param array<int, string> $requiredItemKeys
+     */
+    private static function problemMatchesGroupingCriteria(int $problemsId, int $locId, array $requiredItemKeys): bool
+    {
+        if ($locId <= 0 && empty($requiredItemKeys)) {
+            return true;
+        }
+
+        $linkedIds = self::getLinkedTicketIds($problemsId);
+        if (empty($linkedIds)) {
+            return false;
+        }
+
+        foreach ($linkedIds as $tid) {
+            $ticketRow = self::loadTicketRow($tid);
+            if ($ticketRow === null || !empty($ticketRow['is_deleted'])) {
+                continue;
+            }
+
+            if ($locId > 0 && (int) ($ticketRow['locations_id'] ?? 0) !== $locId) {
+                continue;
+            }
+
+            if (!empty($requiredItemKeys)) {
+                $candidateKeys = self::getTicketItemKeys($tid);
+                if (empty(array_intersect($requiredItemKeys, $candidateKeys))) {
+                    continue;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

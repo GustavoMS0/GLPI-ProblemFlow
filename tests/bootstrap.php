@@ -474,7 +474,7 @@ namespace {
                 $this->tables[$m[1]] = [];
                 return true;
             }
-            if (preg_match('/DROP\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?([a-zA-Z0-9_]+)`?/i', $sql, $m)) {
+            if (preg_match('/DROP\s+TABLE\s+(?:IF\s+(?:NOT\s+)?EXISTS\s+)?`?([a-zA-Z0-9_]+)`?/i', $sql, $m)) {
                 unset($this->tables[$m[1]]);
                 return true;
             }
@@ -561,7 +561,7 @@ namespace {
                 }
                 return true;
             }
-            if (preg_match('/DROP\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?([a-zA-Z0-9_]+)`?/i', $sql, $m)) {
+            if (preg_match('/DROP\s+TABLE\s+(?:IF\s+(?:NOT\s+)?EXISTS\s+)?`?([a-zA-Z0-9_]+)`?/i', $sql, $m)) {
                 $table = $m[1];
                 unset($this->tables[$table], $this->autoIncrement[$table]);
                 return true;

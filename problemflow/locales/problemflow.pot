@@ -1,0 +1,324 @@
+# Problem Flow - POT translation template
+# Copyright (C) 2026 by G. Martins
+# This file is distributed under the same license as the plugin (GPLv3+).
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Problem Flow 1.0.0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "%1$s muito curto (%2$d/%3$d caracteres)"
+msgstr ""
+
+msgid "%s não preenchido"
+msgstr ""
+
+msgid "Abertura"
+msgstr ""
+
+msgid "Agrupamento Automático de Incidentes Recorrentes"
+msgstr ""
+
+msgid "Agrupamento automático de incidentes recorrentes, gates de Causa Raiz (RCA) e sincronização de fechamento."
+msgstr ""
+
+msgid "Agrupar por ativo vinculado"
+msgstr ""
+
+msgid "Agrupar por categoria ITIL"
+msgstr ""
+
+msgid "Agrupar por localização"
+msgstr ""
+
+msgid "Ao solucionar ou fechar o Problema, aplica solução automática aos chamados abertos vinculados."
+msgstr ""
+
+msgid "Aplicar recursivamente às entidades filhas"
+msgstr ""
+
+msgid "Ativar Problem Flow nesta entidade"
+msgstr ""
+
+msgid "Ativação e Herança"
+msgstr ""
+
+msgid "Ativo (%1$d chamados em %2$dh)"
+msgstr ""
+
+msgid "Ativo vinculado"
+msgstr ""
+
+msgid "Campos RCA obrigatórios pendentes"
+msgstr ""
+
+msgid "Carregar"
+msgstr ""
+
+msgid "Categoria"
+msgstr ""
+
+msgid "Categoria:"
+msgstr ""
+
+msgid "Causa Raiz"
+msgstr ""
+
+msgid "Causa Raiz:"
+msgstr ""
+
+msgid "Chamados iniciais identificados:"
+msgstr ""
+
+msgid "Chamados vinculados automaticamente ao Problema #%1$d: #%2$s."
+msgstr ""
+
+msgid "Chave de agrupamento"
+msgstr ""
+
+msgid "Checklist de Análise de Causa Raiz (RCA)"
+msgstr ""
+
+msgid "Compara itens vinculados em glpi_items_tickets entre os incidentes."
+msgstr ""
+
+msgid "Completo (%d chars)"
+msgstr ""
+
+msgid "Configuração específica removida. A entidade passa a herdar da entidade superior ou do padrão."
+msgstr ""
+
+msgid "Cria ou vincula um Problema aberto ao atingir o limiar de incidentes equivalentes na janela."
+msgstr ""
+
+msgid "Data"
+msgstr ""
+
+msgid "Desativado"
+msgstr ""
+
+msgid "Em atendimento (atribuído)"
+msgstr ""
+
+msgid "Em atendimento (planejado)"
+msgstr ""
+
+msgid "Entidade"
+msgstr ""
+
+msgid "Entidade:"
+msgstr ""
+
+msgid "Entidades subordinadas sem regra própria herdarão esta política."
+msgstr ""
+
+msgid "Escalonamento automático"
+msgstr ""
+
+msgid "Escalonar automaticamente para Problema"
+msgstr ""
+
+msgid "Evento"
+msgstr ""
+
+msgid "Eventos Recentes nesta Entidade"
+msgstr ""
+
+msgid "Exige e compara a mesma categoria (itilcategories_id) entre os chamados."
+msgstr ""
+
+msgid "Exige e compara a mesma localização (locations_id) além dos demais critérios."
+msgstr ""
+
+msgid "Exigir Causa Raiz (causecontent)"
+msgstr ""
+
+msgid "Exigir Impacto (impactcontent)"
+msgstr ""
+
+msgid "Exigir Sintomas (symptomcontent)"
+msgstr ""
+
+msgid "Fechado"
+msgstr ""
+
+msgid "Herdada de %s"
+msgstr ""
+
+msgid "Herdada de: %s"
+msgstr ""
+
+msgid "Histórico Problem Flow"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "Impacto"
+msgstr ""
+
+msgid "Impede solucionar ou fechar Problema sem descrição válida da causa raiz."
+msgstr ""
+
+msgid "Impede solucionar ou fechar Problema sem descrição válida de impacto."
+msgstr ""
+
+msgid "Impede solucionar ou fechar Problema sem descrição válida dos sintomas."
+msgstr ""
+
+msgid "Incidente recorrente (%d chamados)"
+msgstr ""
+
+msgid "Incidentes Recorrentes Vinculados"
+msgstr ""
+
+msgid "Janela de observação em horas (1–720)"
+msgstr ""
+
+msgid "Limiar de incidentes (2–50)"
+msgstr ""
+
+msgid "Localização"
+msgstr ""
+
+msgid "Nenhum chamado vinculado a este Problema até o momento."
+msgstr ""
+
+msgid "Nenhum evento registrado até o momento."
+msgstr ""
+
+msgid "Nenhum evento registrado para este Problema."
+msgstr ""
+
+msgid "Novo"
+msgstr ""
+
+msgid "Não"
+msgstr ""
+
+msgid "Não foi possível alterar o status do Problema: Análise de Causa Raiz (RCA) incompleta — %s."
+msgstr ""
+
+msgid "Não foi possível salvar as regras do Problem Flow."
+msgstr ""
+
+msgid "Opcional (%d chars)"
+msgstr ""
+
+msgid "Origem da política"
+msgstr ""
+
+msgid "Padrão do sistema (inativo)"
+msgstr ""
+
+msgid "Pendente"
+msgstr ""
+
+msgid "Pendente (%1$d/%2$d chars)"
+msgstr ""
+
+msgid "Política inativa nesta entidade"
+msgstr ""
+
+msgid "Problem Flow"
+msgstr ""
+
+msgid "Problem Flow — Gestão Automática de Problemas"
+msgstr ""
+
+msgid "Problem Flow: Problema #%1$d criado automaticamente para %2$d incidentes recorrentes."
+msgstr ""
+
+msgid "Problem Flow: chamado vinculado ao Problema existente #%d."
+msgstr ""
+
+msgid "Problema"
+msgstr ""
+
+msgid "Problema #%1$d criado automaticamente (%2$d incidentes em %3$dh)."
+msgstr ""
+
+msgid "Problema aberto automaticamente pelo Problem Flow após detecção de %1$d incidentes na janela de %2$dh."
+msgstr ""
+
+msgid "Quality Gates (RCA) e Sincronização de Fechamento"
+msgstr ""
+
+msgid "Quando desmarcado, nenhum escalonamento automático, bloqueio RCA ou sincronização é executado."
+msgstr ""
+
+msgid "RCA pronta para solução/fechamento"
+msgstr ""
+
+msgid "Regra Ativa na Entidade"
+msgstr ""
+
+msgid "Regra própria ativa"
+msgstr ""
+
+msgid "Regra própria da entidade"
+msgstr ""
+
+msgid "Regra própria inativa"
+msgstr ""
+
+msgid "Regras do Problem Flow salvas com sucesso."
+msgstr ""
+
+msgid "Remover regra desta entidade"
+msgstr ""
+
+msgid "Resolvido automaticamente pelo Problema #%1$d: %2$s"
+msgstr ""
+
+msgid "Resumo"
+msgstr ""
+
+msgid "Salvar regras"
+msgstr ""
+
+msgid "Sem regra configurada (padrão inativo)"
+msgstr ""
+
+msgid "Sim — propaga solução para chamados abertos"
+msgstr ""
+
+msgid "Sincronizar fechamento"
+msgstr ""
+
+msgid "Sincronizar solução com chamados vinculados"
+msgstr ""
+
+msgid "Sintomas"
+msgstr ""
+
+msgid "Solucionado"
+msgstr ""
+
+msgid "Solução do Problema #%1$d propagada para %2$d chamado(s): #%3$s."
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Status inicial do Problema criado"
+msgstr ""
+
+msgid "Tags HTML, &nbsp; e espaços repetidos são desconsiderados. Informe 0 para exigir apenas texto não vazio."
+msgstr ""
+
+msgid "Tamanho mínimo por campo RCA (caracteres visíveis, 0–500)"
+msgstr ""
+
+msgid "This plugin requires GLPI >= %1$s and <= %2$s."
+msgstr ""
+
+msgid "This plugin requires PHP >= %s."
+msgstr ""
+
+msgid "Título"
+msgstr ""

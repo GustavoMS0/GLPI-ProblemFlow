@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+   <name>Problem Flow</name>
+   <key>problemflow</key>
+   <state>stable</state>
+   <logo>https://raw.githubusercontent.com/GustavoMS0/GLPI-ProblemFlow/main/problemflow.png</logo>
+   <description>
+      <short>
+         <en>Recurring incident grouping, automatic Problem escalation, RCA quality gates, and synchronized linked ticket resolution for GLPI.</en>
+         <pt>Agrupamento de incidentes recorrentes, criação automática de Problemas, gates de RCA e sincronização de fechamento para GLPI.</pt>
+      </short>
+      <long>
+         <en>Automates Problem Management in GLPI 10, 11, and 12. Detects recurring incidents per entity (with recursive inheritance) by category, optional location, and optional linked asset within a configurable time window, automatically creating or linking an open Problem in glpi_problems_tickets. Enforces Root Cause Analysis (RCA) completeness gates (impactcontent, causecontent, symptomcontent) before solving or closing a Problem, provides a dedicated Problem Flow tab, and optionally propagates solutions to open linked tickets with anti-reentrancy protection.</en>
+         <pt>Automatiza a Gestão de Problemas no GLPI 10, 11 e 12. Detecta incidentes recorrentes por entidade (com herança recursiva) por categoria, localização opcional e ativo vinculado opcional dentro de uma janela configurável, criando ou vinculando automaticamente um Problema aberto em glpi_problems_tickets. Impõe quality gates de Análise de Causa Raiz (impactcontent, causecontent, symptomcontent) antes de solucionar ou fechar Problemas, exibe aba dedicada no Problema e opcionalmente propaga a solução aos chamados abertos vinculados com proteção anti-reentrância.</pt>
+      </long>
+   </description>
+   <homepage>https://github.com/GustavoMS0/GLPI-ProblemFlow</homepage>
+   <download>https://github.com/GustavoMS0/GLPI-ProblemFlow/releases</download>
+   <issues>https://github.com/GustavoMS0/GLPI-ProblemFlow/issues</issues>
+   <readme>https://github.com/GustavoMS0/GLPI-ProblemFlow/blob/main/README.md</readme>
+   <authors>
+      <author>G. Martins</author>
+   </authors>
+   <versions>
+      <version>
+         <num>1.0.0</num>
+         <compatibility>~10.0.0 || ~11.0.0 || ~12.0.0</compatibility>
+         <download_url>https://github.com/GustavoMS0/GLPI-ProblemFlow/releases/download/v1.0.0/problemflow-1.0.0.zip</download_url>
+      </version>
+   </versions>
+   <langs>
+      <lang>pt_BR</lang>
+   </langs>
+   <license>GPLv3+</license>
+   <tags>
+      <en>
+         <tag>problem</tag>
+         <tag>incidents</tag>
+         <tag>rca</tag>
+         <tag>itil</tag>
+         <tag>automation</tag>
+      </en>
+      <pt>
+         <tag>problemas</tag>
+         <tag>incidentes</tag>
+         <tag>rca</tag>
+         <tag>itil</tag>
+         <tag>automação</tag>
+      </pt>
+   </tags>
+</root>

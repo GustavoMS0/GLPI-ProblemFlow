@@ -1,0 +1,244 @@
+/**
+ * ------------------------------------------------------------------------
+ * Problem Flow - Estilos da página de configuração e aba de Problemas
+ * Copyright (C) 2026 by G. Martins (GPLv3+)
+ * ------------------------------------------------------------------------
+ */
+
+.problemflow-container,
+.problemflow-tab {
+    max-width: 1080px;
+    margin: 18px auto;
+    padding: 0 12px;
+    font-family: inherit;
+}
+
+.problemflow-card {
+    background: var(--tblr-bg-surface, #ffffff);
+    border: 1px solid var(--tblr-border-color, #dce1e7);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.problemflow-header-card {
+    border-left: 4px solid var(--tblr-primary, #206bc4);
+}
+
+.problemflow-header-top,
+.problemflow-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.problemflow-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--tblr-body-color, #1e293b);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.problemflow-subtitle {
+    margin: 4px 0 0 0;
+    font-size: 0.9rem;
+    color: var(--tblr-secondary-color, #64748b);
+}
+
+.problemflow-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.problemflow-badge-ok {
+    background: rgba(47, 179, 68, 0.12);
+    color: #2fb344;
+    border-color: rgba(47, 179, 68, 0.3);
+}
+
+.problemflow-badge-warn {
+    background: rgba(245, 159, 0, 0.14);
+    color: #d97706;
+    border-color: rgba(245, 159, 0, 0.35);
+}
+
+.problemflow-badge-inherited {
+    background: rgba(32, 107, 196, 0.12);
+    color: var(--tblr-primary, #206bc4);
+    border-color: rgba(32, 107, 196, 0.3);
+}
+
+.problemflow-badge-muted {
+    background: var(--tblr-bg-surface-secondary, #f1f5f9);
+    color: var(--tblr-secondary-color, #64748b);
+    border-color: var(--tblr-border-color, #cbd5e1);
+}
+
+.problemflow-entity-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid var(--tblr-border-color, #e2e8f0);
+}
+
+.problemflow-entity-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 0;
+    color: var(--tblr-body-color, #1e293b);
+}
+
+.problemflow-entity-picker {
+    min-width: 260px;
+    max-width: 420px;
+    flex: 1 1 260px;
+}
+
+.problemflow-section-title {
+    margin: 0 0 14px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--tblr-border-color, #e2e8f0);
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--tblr-body-color, #1e293b);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.problemflow-card-header .problemflow-section-title {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.problemflow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 12px;
+}
+
+.problemflow-check-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--tblr-border-color, #dce1e7);
+    border-radius: 6px;
+    background: var(--tblr-bg-surface-secondary, #f8fafc);
+    cursor: pointer;
+    margin: 0;
+}
+
+.problemflow-check-card:hover {
+    border-color: var(--tblr-primary, #206bc4);
+}
+
+.problemflow-check-card input[type="checkbox"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.problemflow-check-card span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.problemflow-check-card strong {
+    font-size: 0.92rem;
+    color: var(--tblr-body-color, #1e293b);
+}
+
+.problemflow-check-card small {
+    font-size: 0.8rem;
+    color: var(--tblr-secondary-color, #64748b);
+    line-height: 1.35;
+}
+
+.problemflow-params-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--tblr-border-color, #e2e8f0);
+}
+
+.problemflow-number-input,
+.problemflow-select-input {
+    max-width: 240px;
+}
+
+.problemflow-help {
+    margin: 6px 0 0 0;
+    font-size: 0.82rem;
+    color: var(--tblr-secondary-color, #64748b);
+}
+
+.problemflow-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.problemflow-events-card {
+    margin-top: 18px;
+}
+
+.problemflow-rca-grid,
+.problemflow-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.problemflow-rca-item,
+.problemflow-summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--tblr-border-color, #dce1e7);
+    background: var(--tblr-bg-surface-secondary, #f8fafc);
+}
+
+.problemflow-rca-complete {
+    border-left: 4px solid #2fb344;
+}
+
+.problemflow-rca-missing {
+    border-left: 4px solid #d63939;
+}
+
+.problemflow-rca-optional {
+    border-left: 4px solid var(--tblr-border-color, #94a3b8);
+}
+
+.problemflow-summary-label {
+    font-size: 0.78rem;
+    color: var(--tblr-secondary-color, #64748b);
+}
+
+.problemflow-summary-value {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--tblr-body-color, #1e293b);
+}
